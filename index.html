@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width,user-scalable=0">
+		<meta property="og:title" content="10 週年同學會參加表單｜桃園陽明高中第 16 屆 10 班">
+		<meta property="og:type" content="website"/>
+		<meta property="og:url" content="https://irishuang33.github.io/ym10/"/>
+		<meta property="og:image" content="https://irishuang33.github.io/ym10/assets_new/img/fbshare.jpg" />
+		<meta property="og:site_name" content="桃園陽明高中第16屆10班"/>
+		<meta property="og:description" content="10年緣(ㄋㄧㄝˋ)份(ㄩㄢˊ)不來參加同學會嗎？">
+		<meta property="og:locale" content="zh_TW">
+		<title>10 週年同學會參加表單｜桃園陽明高中第 16 屆 10 班</title>
+		<link href="https://fonts.googleapis.com/css?family=Noto+Sans+TC:100,300,400,500,700|Noto+Serif+TC:200,300,400,500,700|Roboto+Slab:100,300,400,700|Roboto:100,300,400,500,700" rel="stylesheet">
+		<link rel="stylesheet" href="assets/css/main.css">	
+	</head>
+	<body>
+		<header>
+			<div class="container">
+				<div class="flex">
+					10 週年同學會參加表單｜桃園陽明高中第 16 屆 10 班
+				</div>
+			</div>
+		</header>
+		<section class="sheet">
+			<div class="container">
+				<div class="flex">
+					<form>
+						<ul>
+							<li>
+								<div class="title">
+									姓名
+								</div>
+								<div class="input">
+									<input type="text" id="name">
+								</div>
+							</li>
+							<li>
+								<div class="title">
+									是否參加
+								</div>
+								<div class="input">
+									<select name="join" id="yn" required>
+										<option value="defaul" disabled selected>請選擇</option>
+										<option value="yes">我要參加</option>
+										<option value="no">先略過我</option>
+									</select>
+								</div>
+							</li>
+							<li>
+								<button type="button" id="sendOrder" class="btn">送出訂單</button>
+
+							</li>
+						</ul>
+					</form>
+				</div>
+			</div>
+		</section>
+		<footer>
+			<div class="container">
+				<div class="flex">請大家多多參加</div>
+			</div>
+		</footer>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script>
+			$(function(){
+					// 監聽 送出訂單 按鈕點擊
+					// 下面這段主要在組合資料，還有擋使用者不填資料不能送出
+					$('#sendOrder').click(function(e){
+					var status = true;
+					// 姓名
+					var name = $('#name').val();
+					// 參加與否
+					var yn = $('#yn').children().val(); 
+
+					// 擋住不填資料邏輯
+					if(name == ''){
+						$('#name').css('border','1px solid #ff0000');
+						status = false;
+					}
+					if(yn == ''){
+						$('#yn').css('border','1px solid #ff0000');
+						status = false;
+					}
+					// 如果 必填欄位都過了 才會到這邊
+					if(status){
+						// 增加日期資料
+						var currentdate = new Date();
+						var filltime = currentdate.getFullYear() + "/" + (currentdate.getMonth() + 1) + "/" + currentdate.getDate() + "  " + currentdate.getHours() + ":" + currentdate.getMinutes() + ":" + currentdate.getSeconds();
+						// 打包 要的資料
+						var data = {
+							'name' : name,
+							'time': filltime,
+							'yn':yn,
+						}
+						// 呼叫 send ajax function
+						send(data);
+					}
+				});
+			});
+			function send(data){
+				$.ajax({
+					// 這邊用get type
+					type: "get",
+					// api url - google appscript 產出的 url
+					url: "https://script.google.com/macros/s/AKfycbyslo-KMyJO1gPD_k1BRrAM0eLVwi9ttVs4prgzeINubI0qa4w/exec",
+					// 剛剛整理好的資料帶入
+					data: data,
+					// 資料格式是JSON 
+					dataType: "JSON",
+					// 成功送出 會回頭觸發下面這塊感謝
+					success: function (response) {
+						console.log(response);
+						alert('感謝您的填寫！ Bye！');
+					}
+				});
+			}
+		</script>
+	</body>
+</html>
